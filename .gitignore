@@ -1,0 +1,193 @@
+# ==============================================================================
+# .gitignore - Pothole Severity Detection
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Byte-compiled / optimized / Python cache files
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ------------------------------------------------------------------------------
+# Virtual Environments
+# ------------------------------------------------------------------------------
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+conda-env/
+
+# ------------------------------------------------------------------------------
+# Secrets, Credentials & Environment Configs
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+secrets.json
+credentials.json
+token.json
+client_secret*.json
+id_rsa
+id_ecdsa
+id_ed25519
+
+# ------------------------------------------------------------------------------
+# Datasets (Raw and Processed)
+# ------------------------------------------------------------------------------
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Common data formats in data folders
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.mat
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ------------------------------------------------------------------------------
+# Generated Model Files & Checkpoints
+# ------------------------------------------------------------------------------
+*.pt
+*.pth
+*.pkl
+*.pickle
+*.joblib
+*.onnx
+*.h5
+*.hdf5
+*.keras
+*.tflite
+*.ckpt
+*.safetensors
+*.model
+models/*
+!models/.gitkeep
+src/models/*.pt
+src/models/*.pth
+src/models/*.pkl
+src/models/*.pickle
+src/models/*.joblib
+src/models/*.onnx
+
+# ------------------------------------------------------------------------------
+# Generated Results, Figures & Reports
+# ------------------------------------------------------------------------------
+results/figures/*
+!results/figures/.gitkeep
+results/reports/*
+!results/reports/.gitkeep
+results/*
+!results/figures/
+!results/reports/
+!results/.gitkeep
+*.log
+logs/
+runs/
+wandb/
+mlruns/
+lightning_logs/
+
+# ------------------------------------------------------------------------------
+# Jupyter Notebook Checkpoints
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# ------------------------------------------------------------------------------
+# Testing, Coverage & Profiling
+# ------------------------------------------------------------------------------
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ------------------------------------------------------------------------------
+# Operating System & IDE Files
+# ------------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ------------------------------------------------------------------------------
+# Explicitly Tracked Files & Placeholders
+# ------------------------------------------------------------------------------
+!.gitkeep
+!README.md
+!requirements.txt
+!.gitignore
+!src/
+!tests/
+!app/
+!notebooks/
+!notebooks/.gitkeep
+!src/**/*.py
+!tests/**/*.py
+!app/**/*.py
+
+# Re-ensure model files, datasets, and caches in source dirs are excluded
+*.pt
+*.pth
+*.pkl
+*.pickle
+*.joblib
+*.onnx
+*.h5
+*.hdf5
+*.keras
+*.tflite
+*.ckpt
+*.safetensors
+*.model

@@ -1,0 +1,31 @@
+# Core Scientific Computing & Data Analysis
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Computer Vision & Depth Map Processing
+opencv-python>=4.8.0
+scikit-image>=0.21.0
+Pillow>=10.0.0
+
+# Traditional Machine Learning & Modeling
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+lightgbm>=4.0.0
+joblib>=1.3.0
+
+# Data Visualization & Reporting
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Web Application & Dashboard (BMC Prioritization)
+streamlit>=1.28.0
+
+# Utilities & Configuration
+pyyaml>=6.0.1
+tqdm>=4.66.0
+
+# Development, Testing & Notebooks
+pytest>=7.4.0
+jupyter>=1.0.0
+ipykernel>=6.25.0
