@@ -1,0 +1,28 @@
+{
+  "name": "pothole-severity-detection",
+  "version": "1.0.0",
+  "description": "[![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11-blue.svg)](https://www.python.org/) [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![GitHub Repository](https://img.shields.io/badge/GitHub-pothole--severity--detection-lightgrey.svg)](https://github.com/AnushkaGadhave/pothole-severity-detection)",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnushkaGadhave/pothole-severity-detection.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnushkaGadhave/pothole-severity-detection/issues"
+  },
+  "homepage": "https://github.com/AnushkaGadhave/pothole-severity-detection#readme",
+  "devDependencies": {
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  }
+}

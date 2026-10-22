@@ -1,0 +1,33 @@
+{
+  "project": "AI-Based Pothole Depth and Physical Damage Severity Assessment",
+  "module": "RGB Pothole Segmentation",
+  "model_file": "rgb_segmenter.joblib",
+  "created_at_utc": "2026-10-14T17:39:51.162600+00:00",
+  "validation_metrics": {
+    "group_disjoint_fold_0": {
+      "mean_iou": 0.3872324446223036,
+      "std_iou": 0.20766256019345017,
+      "median_iou": 0.3444690569843635,
+      "mean_dice": 0.5251239686167813,
+      "std_dice": 0.22430211021943997,
+      "median_dice": 0.5124228981612395,
+      "samples_evaluated": 88,
+      "unique_pothole_groups": 20
+    },
+    "official_pothole440_val": {
+      "mean_iou": 0.4097499151120602,
+      "std_iou": 0.23678177697361455,
+      "median_iou": 0.372055768776949,
+      "mean_dice": 0.5395536670140854,
+      "std_dice": 0.2530722637310271,
+      "median_dice": 0.5423223170897846,
+      "samples_evaluated": 50,
+      "note": "Official Pothole440 val split contains augmented versions of training potholes (100% identity leakage)."
+    }
+  },
+  "scientific_disclaimers": [
+    "Segmentation produces 2D binary masks; it DOES NOT estimate 3D depth from RGB.",
+    "Mean Dice is ~0.53 and Mean IoU is ~0.39; classical ML provides a lightweight baseline but is sensitive to dark pavement shadows.",
+    "Severity tiers evaluated from the resulting mask remain provisional Relative Pothole Hazard Index categories, NOT certified municipal maintenance priorities."
+  ]
+}

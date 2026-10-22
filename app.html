@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrackSight — Computer Vision Road Inspection Dashboard</title>
+  <meta name="description" content="Operational computer-vision dashboard for road surface defect segmentation, 2D geometry profiling, and provisional severity analysis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body class="app-body">
+
+  <div class="app-shell">
+
+    <!-- ==============================================================================
+         SIDEBAR NAVIGATION
+         ============================================================================== -->
+    <aside class="app-sidebar" id="appSidebar" aria-label="Main Application Navigation">
+      <div class="sidebar-header">
+        <a href="#dashboard" class="sidebar-brand">
+          <svg class="sidebar-logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="32" height="32" rx="8" stroke="#B42368" stroke-width="2.5" fill="#FFFFFF"/>
+            <line x1="6" y1="18" x2="30" y2="18" stroke="#E9E4DC" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <line x1="18" y1="6" x2="18" y2="30" stroke="#E9E4DC" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M8 22C11 14 14 13 18 17C22 21 25 15 28 13" stroke="#B42368" stroke-width="2.8" stroke-linecap="round"/>
+            <circle cx="18" cy="17" r="4" fill="#FF7043"/>
+            <circle cx="18" cy="17" r="6.5" stroke="#FFD166" stroke-width="1.8"/>
+          </svg>
+          <div class="sidebar-brand-text">
+            <span class="sidebar-brand-name">CrackSight</span>
+            <span class="sidebar-brand-sub">Road Condition AI</span>
+          </div>
+        </a>
+        <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" aria-label="Toggle sidebar width" title="Collapse sidebar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Operations</span>
+        <a href="#dashboard" class="sidebar-nav-item is-active" data-route="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#analysis" class="sidebar-nav-item" data-route="analysis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="3"></circle>
+            <line x1="12" y1="2" x2="12" y2="5"></line>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+            <line x1="2" y1="12" x2="5" y2="12"></line>
+            <line x1="19" y1="12" x2="22" y2="12"></line>
+          </svg>
+          <span>Image Analysis</span>
+        </a>
+
+        <a href="#map" class="sidebar-nav-item" data-route="map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <span>Inspection Map</span>
+        </a>
+
+        <a href="#history" class="sidebar-nav-item" data-route="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Analysis History</span>
+        </a>
+
+        <span class="nav-section-label">Intelligence</span>
+        <a href="#analytics" class="sidebar-nav-item" data-route="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span>Analytics</span>
+        </a>
+
+        <a href="#methodology" class="sidebar-nav-item" data-route="methodology">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span>Methodology</span>
+        </a>
+
+        <a href="#settings" class="sidebar-nav-item" data-route="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="sidebar-return-link" title="Return to Marketing Landing Page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>← Marketing Site</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==============================================================================
+         MAIN CONTENT AREA & TOPBAR
+         ============================================================================== -->
+    <main class="app-main-viewport">
+
+      <!-- Sticky Topbar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-trigger" id="mobileMenuTrigger" aria-label="Open mobile navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+
+          <div class="app-breadcrumbs">
+            <a href="#dashboard" class="breadcrumb-root">CrackSight</a>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current" id="breadcrumbCurrent">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="topbar-center">
+          <div class="search-field-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="search" class="topbar-search-input" id="globalSearchInput" placeholder="Quick search records, potholes, or IDs..." aria-label="Global record search">
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" id="topbarNewAnalysisBtn">
+            <span>+ New Analysis</span>
+          </button>
+
+          <button class="topbar-icon-btn" id="themeToggleBtn" aria-label="Toggle Dark/Light Mode" title="Toggle theme">
+            <span id="themeIconSpan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+          </button>
+
+          <div class="topbar-user-pill">
+            <div class="user-avatar-circle">CS</div>
+            <span class="user-role-label">Analyst</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Workspace Viewports -->
+      <div class="app-content-container">
+
+        <!-- ==============================================================================
+             PAGE 1: DASHBOARD VIEW (#view-dashboard)
+             ============================================================================== -->
+        <section class="app-view-panel is-active" id="view-dashboard" aria-label="Dashboard Overview">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                OPERATIONAL DASHBOARD
+              </span>
+              <h1 class="view-heading-title">Surface Condition Overview</h1>
+              <p class="view-subtitle-desc">
+                Real-time road surface defect segmentation telemetry, dataset class distributions, and provisional relative severity categories.
+              </p>
+            </div>
+            <div class="view-actions-right">
+              <button class="btn btn-primary btn-sm" id="dashNewAnalysisBtn">Start New Analysis →</button>
+            </div>
+          </div>
+
+          <!-- 5 Summary Metric Cards -->
+          <div class="summary-metrics-grid">
+            <!-- Card 1: White Glass -->
+            <div class="app-glass-card glass-white">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Total Analyses</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-berry);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value-display" id="statTotalAnalyses">0</div>
+              <div class="metric-context-desc">
+                User inspection runs
+              </div>
+            </div>
+
+            <!-- Card 2: Peach Glass -->
+            <div class="app-glass-card glass-peach">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Road Images Ingested</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-sunset);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value-display" id="statProcessedImages">0</div>
+              <div class="metric-context-desc">
+                RGB 2D pavement camera scenes
+              </div>
+            </div>
+
+            <!-- Card 3: Aqua Glass -->
+            <div class="app-glass-card glass-aqua">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Masks Generated</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-aqua);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
+                </div>
+              </div>
+              <div class="metric-value-display" id="statMasksAvailable">0</div>
+              <div class="metric-context-desc">
+                Binary 2D segmentation masks
+              </div>
+            </div>
+
+            <!-- Card 4: Violet Glass -->
+            <div class="app-glass-card glass-violet">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Canonical Groups</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-violet);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value-display">98</div>
+              <div class="metric-context-desc">
+                Strict group-disjoint locations
+              </div>
+            </div>
+
+            <!-- Card 5: Butter Glass -->
+            <div class="app-glass-card glass-butter">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Macro-F1 (Model A)</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-butter); color: #4A3800;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+              </div>
+              <div class="metric-value-display">0.888</div>
+              <div class="metric-context-desc">
+                Balanced Acc: 0.894 (3 features)
+              </div>
+            </div>
+
+            <!-- Card 6: Mint Glass (Geotagged Sites) -->
+            <div class="app-glass-card glass-mint" style="cursor: pointer;" onclick="navigateTo('map')">
+              <div class="metric-card-top">
+                <span class="metric-label-text">Geotagged Sites</span>
+                <div class="metric-icon-bubble" style="background: var(--gradient-mint); color: #064E3B;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+              </div>
+              <div class="metric-value-display" id="statGeotaggedCount">0</div>
+              <div class="metric-context-desc" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>GPS Location Tagged</span>
+                <span style="color: var(--color-primary); font-weight: 600;">Open Map →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Area -->
+          <div class="dashboard-visuals-grid">
+            <!-- Chart 1: Severity Distribution -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-primary); box-shadow: none;"></span>
+                  Provisional Severity Distribution
+                </div>
+                <span class="chart-card-badge">POPULATION TERTILES</span>
+              </div>
+
+              <div class="severity-dist-list">
+                <div class="dist-bar-item">
+                  <div class="dist-bar-meta">
+                    <span class="dist-tier-name" style="color: var(--color-primary);">
+                      <span style="width: 10px; height: 10px; border-radius: 50%; background: #B42368; display: inline-block;"></span>
+                      High Severity (Tier 3)
+                    </span>
+                    <span class="dist-count-pill" id="dashCountHigh">0 (0%)</span>
+                  </div>
+                  <div class="dist-track">
+                    <div class="dist-fill tier-high" id="dashFillHigh" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="dist-bar-item">
+                  <div class="dist-bar-meta">
+                    <span class="dist-tier-name" style="color: var(--color-accent);">
+                      <span style="width: 10px; height: 10px; border-radius: 50%; background: #FF7043; display: inline-block;"></span>
+                      Medium Severity (Tier 2)
+                    </span>
+                    <span class="dist-count-pill" id="dashCountMed">0 (0%)</span>
+                  </div>
+                  <div class="dist-track">
+                    <div class="dist-fill tier-medium" id="dashFillMed" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="dist-bar-item">
+                  <div class="dist-bar-meta">
+                    <span class="dist-tier-name" style="color: var(--color-tech);">
+                      <span style="width: 10px; height: 10px; border-radius: 50%; background: #6558D3; display: inline-block;"></span>
+                      Low Severity (Tier 1)
+                    </span>
+                    <span class="dist-count-pill" id="dashCountLow">0 (0%)</span>
+                  </div>
+                  <div class="dist-track">
+                    <div class="dist-fill tier-low" id="dashFillLow" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.8125rem; color: var(--color-text-muted);">
+                * Relative tiers assigned via model inference based on user-recorded inspection sessions.
+              </div>
+            </div>
+
+            <!-- Chart 2: Inspection Activity Timeline -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-accent); box-shadow: none;"></span>
+                  Analysis Activity Timeline
+                </div>
+                <span class="chart-card-badge">SURVEY FREQUENCY</span>
+              </div>
+
+              <div class="timeline-svg-wrap">
+                <svg class="timeline-svg" id="dashTimelineSvg" viewBox="0 0 540 180" preserveAspectRatio="none" aria-label="Inspection activity over time"></svg>
+              </div>
+
+              <div id="dashTimelineLabels" style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-text-subtle); font-family: var(--font-mono); margin-top: 8px;"></div>
+            </div>
+          </div>
+
+          <!-- Recent Analysis Jobs Table -->
+          <div class="recent-jobs-panel">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin: 0;">
+                Recent Analysis Jobs
+              </h2>
+              <a href="#history" class="btn btn-secondary btn-sm" id="dashViewAllHistoryBtn">View Complete Archive →</a>
+            </div>
+
+            <div class="table-responsive-wrapper app-glass-card" style="padding: 0; overflow: hidden;">
+              <table class="cracksight-table">
+                <thead>
+                  <tr>
+                    <th>Preview</th>
+                    <th>Image / ID</th>
+                    <th>Timestamp</th>
+                    <th>Modality</th>
+                    <th>Planar Area</th>
+                    <th>Provisional Tier</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashRecentTableBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Scientific Limitation Notice Banner -->
+          <div class="scientific-notice-card">
+            <svg class="scientific-notice-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              <div class="scientific-notice-title">Operational Boundaries & Scientific Disclaimer</div>
+              <p class="scientific-notice-body">
+                CrackSight outputs are experimental computer-vision indicators. Severity tiers (Low, Medium, High) are provisional relative rankings calibrated strictly on the Pothole440 research partition. They do not represent certified municipal pavement urgency ratings (BMC) or geotechnical standards (IRC:82). Sensor depth maps are uncalibrated 8-bit integers [0, 190], not metric millimeters.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 2: IMAGE ANALYSIS & RESULTS STUDIO (#view-analysis)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-analysis" aria-label="Image Analysis & Results Studio">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                COMPUTER VISION STUDIO
+              </span>
+              <h1 class="view-heading-title">Pothole Segmentation & Telemetry</h1>
+              <p class="view-subtitle-desc">
+                Upload RGB road imagery to extract 2D binary cavity masks, calculate 14 geometric footprint features, and evaluate provisional severity.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stacked Analysis Workspace (Full Width Sections) -->
+          <div class="analysis-workspace-stack">
+
+            <!-- 1. Select Road Imagery (Full-Width Rectangular Card) -->
+            <div class="app-glass-card glass-peach analysis-upload-card" id="uploadSectionCard">
+              <div class="section-card-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    1. Select Road Imagery
+                  </h2>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 3px;">
+                    Upload high-resolution road pavement photography to initialize 2D cavity segmentation and defect morphometry.
+                  </div>
+                </div>
+                <span class="tag-pill tag-peach" style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 700;">STEP 1 · REQUIRED</span>
+              </div>
+
+              <!-- Dropzone -->
+              <div class="upload-dropzone-box" id="uploadDropzone">
+                <div class="upload-icon-circle">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </div>
+                <div style="text-align: center;">
+                  <div class="upload-primary-text">Drag & drop road pavement image</div>
+                  <div class="upload-sub-text">PNG, JPG, JPEG, WEBP up to 20MB · Natural lighting recommended</div>
+                </div>
+                <button class="btn btn-primary btn-sm" id="browseFilesBtn" type="button" style="padding: 10px 22px; font-weight: 600;">Browse Local File</button>
+                <input type="file" id="roadImageFileInput" accept="image/png, image/jpeg, image/webp" style="display: none;">
+              </div>
+
+              <!-- Upload Preview Container (Hidden initially until file selected) -->
+              <div id="uploadPreviewContainer" class="upload-preview-container" style="display: none;">
+                <div class="upload-preview-viewport">
+                  <img id="uploadPreviewImg" src="" alt="Upload preview" class="upload-preview-image">
+                </div>
+                <div class="upload-preview-meta-bar">
+                  <div class="upload-preview-info">
+                    <div class="upload-preview-filename" id="uploadPreviewName">image.png</div>
+                    <div class="upload-preview-stats">
+                      <span id="uploadPreviewDims">960 × 720 px</span>
+                      <span style="opacity: 0.5;">·</span>
+                      <span id="uploadPreviewBytes">1.7 MB</span>
+                      <span class="tag-pill tag-mint" style="font-size: 0.6875rem; margin-left: 4px;">IMAGE LOADED</span>
+                    </div>
+                  </div>
+                  <div class="upload-preview-actions">
+                    <button class="btn btn-secondary btn-sm" id="replaceImageBtn" type="button">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                      <span>Replace Image</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Tag Location (Optional) (Full-Width Map Section) -->
+            <div class="app-glass-card glass-white location-selection-card" id="locationSectionCard">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    2. Tag Location (Optional)
+                  </h2>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 3px;">
+                    Search a road, pick on map, or use GPS to geotag this defect for municipal road maintenance.
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="useMyLocationBtn" title="Request browser geolocation to tag this inspection">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                    </svg>
+                    <span>Use My Location</span>
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="clearLocationBtn" style="display: none;" title="Clear selected location">
+                    ✕ Clear
+                  </button>
+                </div>
+              </div>
+
+              <!-- Search Input with Real Autocomplete Dropdown -->
+              <div class="location-search-wrap" style="margin-bottom: 14px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 14px; top: 12px; width: 16px; height: 16px; color: var(--color-text-muted); pointer-events: none;">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  type="text"
+                  id="locationSearchInput"
+                  class="location-search-input"
+                  placeholder="Search street, road name, or landmark (e.g., Marine Drive, Mumbai)..."
+                  autocomplete="off"
+                  aria-label="Search inspection location"
+                  aria-autocomplete="list"
+                  aria-controls="locationSuggestionsList"
+                />
+                <div id="locationSearchSpinner" class="location-search-spinner" style="display: none;"></div>
+
+                <!-- Autocomplete Suggestions Dropdown -->
+                <ul id="locationSuggestionsList" class="location-suggestions-dropdown" role="listbox" style="display: none;"></ul>
+              </div>
+
+              <!-- Interactive Map Container (Full Width, 440px desktop height) -->
+              <div class="analysis-map-container">
+                <div id="analysisLocationMap" style="width: 100%; height: 100%; z-index: 1;"></div>
+                <div class="map-hint-badge">
+                  Click map or drag marker to set coordinates
+                </div>
+              </div>
+
+              <!-- Selected Location Summary Badge -->
+              <div id="selectedLocationSummary" style="display: none; margin-top: 14px; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); font-size: 0.8125rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="status-dot-pulse" style="background: var(--color-primary); flex-shrink: 0;"></span>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-main);" id="selectedAddressText">Selected Address</div>
+                      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;">
+                        Lat: <span id="selectedLatVal">0.000000</span> · Lng: <span id="selectedLngVal">0.000000</span>
+                        <span class="tag-pill tag-aqua" id="selectedSourceTag" style="margin-left: 6px; font-size: 0.65rem;">PICKED</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-xs" id="removeLocationTagBtn" style="color: var(--color-primary);" title="Remove location tag">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              <!-- Run Action -->
+              <div class="analysis-action-bar" style="margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 18px; border-top: 1px solid var(--border-color);">
+                <div style="font-size: 0.8125rem; color: var(--color-text-muted); display: flex; align-items: center; gap: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  <span>Ready to segment defect contours and measure 14 geometric descriptors</span>
+                </div>
+                <button class="btn btn-primary" id="runAnalysisBtn" style="min-width: 260px; justify-content: center; padding: 14px 28px; font-size: 0.9375rem;">
+                  <span>Run Segmentation Analysis</span>
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. Computer Vision Pipeline Mechanics (Full-Width Below Everything) -->
+            <div class="app-glass-card glass-white pipeline-mechanics-card" id="pipelineMechanicsCard">
+              <div style="margin-bottom: 18px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                  <h2 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                      <polyline points="2 17 12 22 22 17"></polyline>
+                      <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    3. Computer Vision Pipeline Mechanics
+                  </h2>
+                  <span class="tag-pill tag-violet" style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;">INFERENCE PIPELINE</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+                  The model processes natural asphalt imagery using spatial pixel classification and morphological hole closing. The resulting binary mask serves as the basis for 14 image-derived geometric descriptors.
+                </p>
+              </div>
+
+              <!-- Two Balanced Cards Side-by-Side on Desktop, Stacked on Narrow Screens -->
+              <div class="pipeline-models-grid">
+                <div class="pipeline-model-card">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-primary); font-weight: 700; letter-spacing: 0.06em;">SEGMENTER</div>
+                    <span class="tag-pill tag-pink" style="font-size: 0.65rem;">STAGE 1</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.9375rem; color: var(--color-text-main);">RGB Multi-Scale Pixel Classifier</div>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 4px;">Mean Dice: ~0.53 · Mean IoU: ~0.39</div>
+                </div>
+
+                <div class="pipeline-model-card">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-tech); font-weight: 700; letter-spacing: 0.06em;">CLASSIFIER</div>
+                    <span class="tag-pill tag-violet" style="font-size: 0.65rem;">STAGE 2</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.9375rem; color: var(--color-text-main);">SVM (RBF) Tertile Ranker</div>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 4px;">Macro-F1: 0.8879 · Calibrated folds</div>
+                </div>
+              </div>
+
+              <div class="pipeline-tip-box" style="margin-top: 16px; background: var(--color-primary-tint); border: 1px solid var(--color-primary-border); border-radius: var(--radius-md); padding: 14px 18px;">
+                <div style="font-size: 0.8125rem; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                  <span>💡</span>
+                  <span>Analysis Tip</span>
+                </div>
+                <div style="font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.55;">
+                  For best segmentation results, ensure road imagery is captured with adequate daylight and minimal strong diagonal cast shadows.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Analysis Service Alert/Error Banner (Hidden by default) -->
+          <div class="analysis-alert-banner" id="analysisAlertBanner" style="display: none; margin-top: 24px; padding: 16px 20px; border-radius: var(--radius-lg); background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35);">
+            <div style="display: flex; align-items: flex-start; gap: 14px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.2" style="flex-shrink: 0; margin-top: 2px;">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <div style="flex-grow: 1;">
+                <div style="font-weight: 700; font-size: 0.9375rem; color: #DC2626; margin-bottom: 4px;" id="analysisAlertTitle">Backend Inference Service Unavailable</div>
+                <div style="font-size: 0.8125rem; color: var(--color-text-main); line-height: 1.5;" id="analysisAlertMessage">
+                  Could not connect to the Python inference server. Please run <code>python app/api.py</code> in your terminal and ensure port 8000 is accessible.
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="analysisAlertRetryBtn" style="flex-shrink: 0;">Retry Connection</button>
+            </div>
+          </div>
+
+          <!-- ==============================================================================
+               RESULTS STUDIO PANEL (Visible when analysis active)
+               ============================================================================== -->
+          <div class="app-glass-card glass-white results-studio-card" id="resultsStudioCard" style="display: none;">
+
+            <!-- Indeterminate Processing Overlay -->
+            <div class="processing-state-overlay" id="processingOverlay">
+              <div class="processing-spinner"></div>
+              <div class="processing-step-msg" id="processingStepMsg">1/4: Ingesting RGB road pavement matrix...</div>
+              <div style="font-size: 0.8125rem; color: var(--color-text-muted);">Extracting planar geometry · Group-disjoint calibration</div>
+            </div>
+
+            <!-- Studio Toolbar -->
+            <div class="studio-toolbar">
+              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span style="font-family: var(--font-display); font-weight: 750; font-size: 1.125rem;">Visual Comparison:</span>
+
+                <div class="studio-segmented-tabs" role="tablist">
+                  <button class="studio-tab-btn is-active" data-mode="composite" role="tab">Composite Overlay</button>
+                  <button class="studio-tab-btn" data-mode="split" role="tab">Split Slider</button>
+                  <button class="studio-tab-btn" data-mode="binary" role="tab">Binary Mask (2D)</button>
+                  <button class="studio-tab-btn" data-mode="source" role="tab">Source RGB</button>
+                  <button class="studio-tab-btn" data-mode="depth" role="tab">Depth Map</button>
+                </div>
+              </div>
+
+              <!-- Opacity Slider for Composite Mode -->
+              <div class="opacity-control-bar" id="opacityControlBar">
+                <span>Mask Opacity:</span>
+                <input type="range" class="opacity-slider" id="maskOpacitySlider" min="0" max="100" value="70" aria-label="Adjust segmentation mask opacity">
+                <span style="font-family: var(--font-mono); font-weight: 700; width: 36px;" id="maskOpacityVal">70%</span>
+              </div>
+            </div>
+
+            <!-- Comparison Viewport Area -->
+            <div class="comparison-viewport-area" id="studioViewport">
+
+              <!-- Mode 1: Composite Overlay -->
+              <div id="compositeOverlayWrap" style="position: absolute; inset: 0;">
+                <img id="studioOverlayRgb" src="" alt="Road substrate" class="viewport-layer">
+                <img id="studioOverlayMaskLayer" src="" alt="Segmented mask overlay" class="viewport-layer" style="opacity: 0.7; filter: drop-shadow(0 0 10px rgba(180,35,104,0.6));">
+              </div>
+
+              <!-- Mode 2: Interactive Split Slider -->
+              <div id="splitSliderContainer" class="split-slider-container" style="display: none;">
+                <img id="splitBeforeImg" src="./assets/sample_pothole_rgb.png" alt="Raw source asphalt" class="split-image-before">
+                <div id="splitImageAfterWrap" class="split-image-after-wrap">
+                  <img id="splitAfterImg" src="./assets/sample_pothole_mask.png" alt="Segmented cavity mask" class="split-image-after">
+                </div>
+                <div id="splitDividerHandle" class="split-divider-handle" title="Drag to compare before & after">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B42368" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="translate(6, 0)"/></svg>
+                </div>
+              </div>
+
+              <!-- Mode 3: Pure Binary Mask + Vector Geometry Overlay -->
+              <div id="binaryMaskWrap" style="display: none; position: absolute; inset: 0;">
+                <img id="studioBinaryMaskImg" src="./assets/sample_pothole_mask.png" alt="Binary mask" class="viewport-layer">
+                <svg id="studioVectorOverlaySvg" class="vector-geometry-overlay" viewBox="0 0 960 720" preserveAspectRatio="none" aria-hidden="true"></svg>
+              </div>
+
+              <!-- Mode 4: Source RGB -->
+              <div id="sourceRgbWrap" style="display: none; position: absolute; inset: 0;">
+                <img id="studioSourceImg" src="./assets/sample_pothole_rgb.png" alt="Clean road RGB" class="viewport-layer">
+              </div>
+
+              <!-- Mode 5: Sensor Depth Map -->
+              <div id="depthMapWrap" style="display: none; position: absolute; inset: 0;">
+                <img id="studioDepthImg" src="./assets/sample_pothole_depth.png" alt="Grayscale depth representation" class="viewport-layer">
+              </div>
+
+            </div>
+
+            <!-- Severity Assessment & Telemetry Header -->
+            <div style="margin-top: 24px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap;">
+                  <span class="tier-badge high" id="resultsTierBadge">High Severity Tier</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 700; color: var(--color-primary);" id="resultsRphiVal">RPHI Score: 0.643</span>
+                  <span class="tag-pill tag-aqua" id="resultsLatencyTag" style="font-size: 0.6875rem;">142ms · RGBSegmenter</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--color-text-muted); margin: 0;" id="resultsTierDesc">
+                  Provisional relative hazard ranking: Tertile 3 (67%–100% of dataset population). Substantial planar expansion defect.
+                </p>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary btn-sm" id="downloadMaskPngBtn">Download Mask PNG</button>
+                <button class="btn btn-primary btn-sm" id="exportAnalysisJsonBtn">Export JSON Report</button>
+              </div>
+            </div>
+
+            <!-- Geospatial Location Summary Card in Results Studio -->
+            <div class="app-glass-card glass-aqua" id="resultsLocationCard" style="margin-top: 20px; display: none; padding: 16px 20px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span style="font-family: var(--font-display); font-weight: 750; font-size: 1.05rem;">Geospatial Inspection Site</span>
+                </div>
+                <button type="button" class="btn btn-secondary btn-xs" id="resultsViewOnMapBtn">
+                  View in Geospatial Dashboard →
+                </button>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 280px; gap: 16px; align-items: center;">
+                <div>
+                  <div style="font-size: 0.9375rem; font-weight: 600; color: var(--color-text-main); margin-bottom: 4px;" id="resultsAddressDisplay">
+                    Location Address
+                  </div>
+                  <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-primary); font-weight: 600; margin-bottom: 6px;" id="resultsCoordsDisplay">
+                    0.00000° N, 0.00000° E
+                  </div>
+                  <div style="font-size: 0.75rem; color: var(--color-text-muted);" id="resultsLocationSourceTag">
+                    Tagged via Map · Ready for municipal road maintenance triage
+                  </div>
+                </div>
+                <div style="height: 120px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-color); position: relative; background: var(--bg-subtle);">
+                  <div id="resultsMiniMap" style="width: 100%; height: 100%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="resultsNoLocationNotice" style="margin-top: 16px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--bg-subtle); border: 1px dashed var(--border-color); font-size: 0.75rem; color: var(--color-text-muted); display: flex; align-items: center; justify-content: space-between;">
+              <span>No geographical coordinates were tagged during image upload.</span>
+              <span style="color: var(--color-text-subtle);">Optional geotagging available</span>
+            </div>
+
+            <!-- 14 Image-Derived Features Grid -->
+            <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-top: 28px; margin-bottom: 4px;">
+              Extracted Planar Geometries & Features (14 Descriptors)
+            </h3>
+            <p style="font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 14px;">
+              Morphometric measurements derived from the predicted 2D region. All units in uncalibrated image pixels.
+            </p>
+
+            <div class="features-telemetry-grid">
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Mask Area (px)</span>
+                <span class="feat-item-val" id="featArea" style="color: var(--color-primary);">68,529 px</span>
+                <span class="feat-item-sub">Planar cavity pixel count</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Coverage Ratio</span>
+                <span class="feat-item-val" id="featCoverage">7.14%</span>
+                <span class="feat-item-sub">Share of total frame</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Perimeter (px)</span>
+                <span class="feat-item-val" id="featPerimeter">1,381 px</span>
+                <span class="feat-item-sub">Contour boundary length</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Circularity</span>
+                <span class="feat-item-val" id="featCircularity" style="color: var(--color-tech);">0.452</span>
+                <span class="feat-item-sub">4π·Area / P² (1.0 = circle)</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Compactness</span>
+                <span class="feat-item-val" id="featCompactness">27.83</span>
+                <span class="feat-item-sub">P² / Area normalized</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Bounding Box</span>
+                <span class="feat-item-val" id="featBbox" style="font-size: 0.9375rem;">[196, 313, 316, 322]</span>
+                <span class="feat-item-sub">[x_min, y_min, w, h]</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Aspect Ratio</span>
+                <span class="feat-item-val" id="featAspectRatio">0.98</span>
+                <span class="feat-item-sub">Width / Height ratio</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Bounding Extent</span>
+                <span class="feat-item-val" id="featExtent">0.673</span>
+                <span class="feat-item-sub">Area / BBox Area</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Centroid (cx, cy)</span>
+                <span class="feat-item-val" id="featCentroid">(354, 474)</span>
+                <span class="feat-item-sub">Center of mass coordinates</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Major Axis</span>
+                <span class="feat-item-val" id="featMajorAxis">316 px</span>
+                <span class="feat-item-sub">Maximum spatial span</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Minor Axis</span>
+                <span class="feat-item-val" id="featMinorAxis">322 px</span>
+                <span class="feat-item-sub">Transverse spatial span</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Relative Depth (Proxy)</span>
+                <span class="feat-item-val" id="featDepthIntensity">182 [Uint8]</span>
+                <span class="feat-item-sub">Max depression intensity</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Volume Proxy</span>
+                <span class="feat-item-val" id="featVolumeProxy">4,682,357</span>
+                <span class="feat-item-sub">Integrated intensity proxy</span>
+              </div>
+
+              <div class="feature-telemetry-item">
+                <span class="feat-item-name">Input Modality</span>
+                <span class="feat-item-val" id="featModality" style="font-size: 0.9375rem; color: var(--color-aqua-text);">RGB + Depth</span>
+                <span class="feat-item-sub">Sensor configuration</span>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 2B: GEOSPATIAL INSPECTION DASHBOARD (#view-map)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-map" aria-label="Geospatial Inspection Dashboard">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                GEOSPATIAL ROAD SURVEY
+              </span>
+              <h1 class="view-heading-title">Geospatial Inspection Dashboard</h1>
+              <p class="view-subtitle-desc">
+                Interactive spatial map plotting genuine road inspections with GPS coordinates, categorized by provisional severity and maintenance repair status.
+              </p>
+            </div>
+            <div class="view-actions-right" style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" id="mapExportCsvBtn" title="Export filtered geotagged records to CSV">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export CSV
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="navigateTo('analysis')">
+                New Tagged Inspection +
+              </button>
+            </div>
+          </div>
+
+          <!-- Map Explorer Layout: Filters & Records on Left, Interactive Map on Right -->
+          <div class="map-dashboard-grid">
+
+            <!-- Left Sidebar: Filters & Geotagged Records List -->
+            <div class="map-sidebar-panel app-glass-card glass-white">
+              <div class="map-filters-header">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                  <span style="font-family: var(--font-display); font-weight: 750; font-size: 1.05rem;">Inspection Sites</span>
+                  <span class="tag-pill tag-aqua" id="mapGeotaggedCountBadge">0 Geotagged</span>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-field-wrap" style="width: 100%; margin-bottom: 12px;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <input type="search" id="mapSearchInput" class="topbar-search-input" placeholder="Search address, road, or job ID..." style="width: 100%;">
+                </div>
+
+                <!-- Filter Controls: Severity, Repair Status & Date Range -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                  <div>
+                    <label style="font-size: 0.6875rem; font-weight: 700; color: var(--color-text-subtle); display: block; margin-bottom: 4px;">SEVERITY</label>
+                    <select id="mapSeverityFilter" class="select-filter-input" style="width: 100%;">
+                      <option value="all">All Tiers</option>
+                      <option value="High">High Severity</option>
+                      <option value="Medium">Medium Severity</option>
+                      <option value="Low">Low Severity</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 0.6875rem; font-weight: 700; color: var(--color-text-subtle); display: block; margin-bottom: 4px;">REPAIR STATUS</label>
+                    <select id="mapStatusFilter" class="select-filter-input" style="width: 100%;">
+                      <option value="all">All Statuses</option>
+                      <option value="Reported">Reported</option>
+                      <option value="Under Review">Under Review</option>
+                      <option value="Repair Scheduled">Repair Scheduled</option>
+                      <option value="Repaired">Repaired</option>
+                      <option value="Reopened">Reopened</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 0.6875rem; font-weight: 700; color: var(--color-text-subtle); display: block; margin-bottom: 4px;">DATE RANGE</label>
+                    <select id="mapDateFilter" class="select-filter-input" style="width: 100%;">
+                      <option value="all">All Dates</option>
+                      <option value="today">Today</option>
+                      <option value="7days">Last 7 Days</option>
+                      <option value="30days">Last 30 Days</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Legend / Severity Key -->
+                <div class="map-severity-legend" style="display: flex; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--border-color); font-size: 0.6875rem; font-family: var(--font-mono);">
+                  <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #B42368; display: inline-block;"></span> High</span>
+                  <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #F59E0B; display: inline-block;"></span> Medium</span>
+                  <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #10B981; display: inline-block;"></span> Low</span>
+                </div>
+              </div>
+
+              <!-- Scrollable List of Filtered Geotagged Records -->
+              <div class="map-records-list" id="mapRecordsList" style="flex-grow: 1; overflow-y: auto; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically populated via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Right Side: Big Interactive Leaflet Map -->
+            <div class="map-display-panel app-glass-card glass-white" style="padding: 0; overflow: hidden; position: relative;">
+              <div id="dashboardGeospatialMap" style="width: 100%; height: 100%; min-height: 580px; z-index: 1;"></div>
+
+              <!-- Empty state overlay if no records have coordinates -->
+              <div id="mapEmptyStateOverlay" class="map-empty-overlay" style="display: none;">
+                <div class="empty-state-card app-glass-card glass-peach" style="max-width: 440px; text-align: center; padding: 36px 28px;">
+                  <div class="upload-icon-circle" style="margin: 0 auto 16px;">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                  <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin: 0 0 8px;">No Geotagged Inspections Yet</h3>
+                  <p style="font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.6; margin: 0 0 20px;">
+                    Your recorded analyses did not include GPS coordinates, or no records match the active filter. Geotag your next road inspection to visualize defects on this municipal map.
+                  </p>
+                  <button class="btn btn-primary btn-sm" onclick="navigateTo('analysis')">Tag a New Inspection →</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 3: ANALYSIS HISTORY VIEW (#view-history)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-history" aria-label="Analysis History & Search">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                PERSISTENT ARCHIVE
+              </span>
+              <h1 class="view-heading-title">Inspection Records</h1>
+              <p class="view-subtitle-desc">
+                Search, filter, and inspect previous road defect analyses. Records persist locally across browser sessions.
+              </p>
+            </div>
+            <div class="view-actions-right">
+              <button class="btn btn-secondary btn-sm" id="historyExportCsvBtn">Export CSV</button>
+              <button class="btn btn-secondary btn-sm" id="historyClearBtn" style="color: #DC2626;">Clear User Records</button>
+            </div>
+          </div>
+
+          <!-- History Filter Toolbar -->
+          <div class="history-filter-toolbar app-glass-card" style="padding: 14px 18px; margin-bottom: 20px;">
+            <div class="filter-controls-group">
+              <div class="search-field-wrap" style="width: 240px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="search" class="topbar-search-input" id="historySearchInput" placeholder="Filter by image name or ID...">
+              </div>
+
+              <select class="select-filter-input" id="historyTierFilter" aria-label="Filter by provisional severity tier">
+                <option value="all">All Severity Tiers</option>
+                <option value="high">High Tier Only</option>
+                <option value="medium">Medium Tier Only</option>
+                <option value="low">Low Tier Only</option>
+              </select>
+
+              <select class="select-filter-input" id="historyModalityFilter" aria-label="Filter by sensor modality">
+                <option value="all">All Modalities</option>
+                <option value="rgb">RGB 2D Only</option>
+                <option value="depth">RGB + Depth Map</option>
+              </select>
+
+              <select class="select-filter-input" id="historySortSelect" aria-label="Sort order">
+                <option value="newest">Sort: Newest First</option>
+                <option value="oldest">Sort: Oldest First</option>
+                <option value="area-desc">Sort: Largest Footprint</option>
+                <option value="area-asc">Sort: Smallest Footprint</option>
+              </select>
+            </div>
+
+            <div>
+              <button class="btn btn-secondary btn-sm" id="historyViewToggle" title="Toggle Table/Card layout">
+                Toggle Layout (Table / Cards)
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic History Content Container -->
+          <div id="historyContentArea">
+            <!-- Injected via JavaScript -->
+          </div>
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 4: ANALYTICS VIEW (#view-analytics)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-analytics" aria-label="Analytics & Model Health">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                MODEL TELEMETRY & POPULATION BENCHMARKS
+              </span>
+              <h1 class="view-heading-title">Dataset & Model Analytics</h1>
+              <p class="view-subtitle-desc">
+                Mathematical distribution of the 434 canonical Pothole440 research partition and cross-validation performance.
+              </p>
+            </div>
+            <div class="view-actions-right">
+              <select class="select-filter-input" id="analyticsSourceFilter">
+                <option value="all">All Sources (Benchmark + User)</option>
+                <option value="benchmark">Pothole440 Benchmark Only (N=434)</option>
+                <option value="user">User Inspections Only</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 2x2 Analytics Charts Grid -->
+          <div class="analytics-grid-2x2">
+
+            <!-- Chart 1: Dataset Population Class Distribution (N=434) -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-primary); box-shadow: none;"></span>
+                  Pothole440 Class Distribution
+                </div>
+                <span class="chart-card-badge">N = 434 SAMPLES</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-around; padding: 10px 0;">
+                <svg id="analyticsDonutSvg" width="180" height="180" viewBox="0 0 180 180" aria-label="Pothole class distribution donut chart"></svg>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8125rem;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #B42368;"></span>
+                    <span style="font-weight: 600;">High Tier:</span>
+                    <span style="font-family: var(--font-mono);">150 (34.6%)</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #FF7043;"></span>
+                    <span style="font-weight: 600;">Medium Tier:</span>
+                    <span style="font-family: var(--font-mono);">143 (32.9%)</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #6558D3;"></span>
+                    <span style="font-weight: 600;">Low Tier:</span>
+                    <span style="font-family: var(--font-mono);">141 (32.5%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 14px; font-size: 0.75rem; color: var(--color-text-muted); border-top: 1px solid var(--border-color); padding-top: 10px;">
+                * Sourced from <code>models/model_metadata.json</code>. Represents tertile quantile splits across 98 physical locations.
+              </div>
+            </div>
+
+            <!-- Chart 2: Planar Feature Correlation Scatter -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-tech); box-shadow: none;"></span>
+                  Footprint Area vs. Circularity
+                </div>
+                <span class="chart-card-badge">GEOMETRIC CLUSTERING</span>
+              </div>
+
+              <div class="scatter-plot-canvas-wrap">
+                <svg id="analyticsScatterSvg" width="100%" height="240" viewBox="0 0 380 200" aria-label="Area vs circularity scatter plot"></svg>
+              </div>
+
+              <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 6px;">
+                <span><span style="color: #6558D3;">●</span> Low Tier</span>
+                <span><span style="color: #FF7043;">●</span> Medium Tier</span>
+                <span><span style="color: #B42368;">●</span> High Tier</span>
+              </div>
+            </div>
+
+            <!-- Chart 3: Model Benchmark Performance Comparison -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-highlight-text); box-shadow: none;"></span>
+                  Trained Model Specifications
+                </div>
+                <span class="chart-card-badge">5-FOLD GROUP-DISJOINT CV</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 14px;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="font-weight: 700; font-size: 0.875rem;">Model A: RPHI Formula Reproducer</span>
+                    <span class="tag-pill tag-berry">3 FEATURES</span>
+                  </div>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 8px;">
+                    SVM (RBF Kernel) on Depth Max Intensity + Mask Area + Volume Proxy
+                  </div>
+                  <div style="display: flex; gap: 18px; font-family: var(--font-mono); font-size: 0.8125rem;">
+                    <span>CV Macro-F1: <strong>0.8879</strong></span>
+                    <span>Balanced Acc: <strong>0.8938</strong></span>
+                  </div>
+                </div>
+
+                <div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 14px;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="font-weight: 700; font-size: 0.875rem;">Model B: 2D Geometry Only</span>
+                    <span class="tag-pill tag-violet">14 FEATURES</span>
+                  </div>
+                  <div style="font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 8px;">
+                    SVM (RBF Kernel) on Planar Footprints (Area, Perimeter, Circularity, BBox, Aspect)
+                  </div>
+                  <div style="display: flex; gap: 18px; font-family: var(--font-mono); font-size: 0.8125rem;">
+                    <span>CV Macro-F1: <strong>0.6955</strong></span>
+                    <span>Balanced Acc: <strong>0.7054</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart 4: Defect Footprint Histogram -->
+            <div class="app-glass-card glass-white">
+              <div class="chart-card-header">
+                <div class="chart-card-title">
+                  <span class="status-dot-pulse" style="background: var(--color-aqua-text); box-shadow: none;"></span>
+                  Defect Pixel Area Distribution
+                </div>
+                <span class="chart-card-badge">PIXEL SCALE</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 4px;">
+                    <span>&lt; 20,000 px (Minor Cavity)</span>
+                    <span style="font-family: var(--font-mono);">128 samples (29.5%)</span>
+                  </div>
+                  <div class="dist-track"><div class="dist-fill" style="width: 29.5%; background: var(--color-tech);"></div></div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 4px;">
+                    <span>20,000 – 50,000 px (Medium Cavity)</span>
+                    <span style="font-family: var(--font-mono);">146 samples (33.6%)</span>
+                  </div>
+                  <div class="dist-track"><div class="dist-fill" style="width: 33.6%; background: var(--color-accent);"></div></div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 4px;">
+                    <span>50,000 – 100,000 px (Large Cavity)</span>
+                    <span style="font-family: var(--font-mono);">112 samples (25.8%)</span>
+                  </div>
+                  <div class="dist-track"><div class="dist-fill" style="width: 25.8%; background: var(--color-primary);"></div></div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 4px;">
+                    <span>&gt; 100,000 px (Severe Depression)</span>
+                    <span style="font-family: var(--font-mono);">48 samples (11.1%)</span>
+                  </div>
+                  <div class="dist-track"><div class="dist-fill" style="width: 11.1%; background: #981B55;"></div></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 5: METHODOLOGY VIEW (#view-methodology)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-methodology" aria-label="Scientific Methodology">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                CIVIL ENGINEERING & COMPUTER VISION PIPELINE
+              </span>
+              <h1 class="view-heading-title">Research Pipeline Specifications</h1>
+              <p class="view-subtitle-desc">
+                The exact architectural stages transforming road pavement imagery into observable geometric indicators. Click any stage to inspect its parameters.
+              </p>
+            </div>
+          </div>
+
+          <!-- 6-Stage Interactive Flow Track -->
+          <div class="methodology-flow-track">
+
+            <div class="methodology-step-row is-selected" data-step="1">
+              <div class="step-num-badge">01</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 1: Pavement Imagery Ingestion</div>
+                <p class="step-summary-copy">
+                  Standard 3-channel natural color RGB images [H, W, 3] captured from road survey cameras, optionally paired with 8-bit uncalibrated sensor depth maps.
+                </p>
+                <div class="step-specs-drawer">
+                  <span>INPUT: RGB (uint8)</span>
+                  <span>OPTIONAL: Depth Array [0, 190]</span>
+                  <span>NORMALIZATION: 0.25 Scale Normalized Matrix</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="methodology-step-row" data-step="2">
+              <div class="step-num-badge" style="background: var(--gradient-sunset);">02</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 2: Spatial Feature Extraction</div>
+                <p class="step-summary-copy">
+                  Multi-scale color contrast, luminance gradient filters, and local patch variance are computed across the asphalt substrate to isolate pavement depressions.
+                </p>
+                <div class="step-specs-drawer">
+                  <span>COLOR SPACE: Lab / YCrCb</span>
+                  <span>CONTRAST: Multi-scale Gaussian Derivatives</span>
+                  <span>TEXTURE: Local Variance Filter</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="methodology-step-row" data-step="3">
+              <div class="step-num-badge" style="background: var(--gradient-violet);">03</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 3: 2D Segmentation Inference</div>
+                <p class="step-summary-copy">
+                  The trained classical multi-scale pixel classifier outputs pixel-level pothole cavity probabilities. Evaluated strictly on group-disjoint physical locations to prevent leakage.
+                </p>
+                <div class="step-specs-drawer">
+                  <span>VALIDATION: Group-Disjoint 5-Fold</span>
+                  <span>METRICS: Mean Dice ~0.53 · Mean IoU ~0.39</span>
+                  <span>DEVICE: CPU-Optimized Inference</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="methodology-step-row" data-step="4">
+              <div class="step-num-badge" style="background: var(--gradient-aqua); color: var(--color-aqua-text);">04</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 4: Morphological Post-Processing</div>
+                <p class="step-summary-copy">
+                  Binary thresholding followed by 3×3 binary closing operations and internal hole-filling to consolidate disconnected cavity fragments and eliminate pixel noise.
+                </p>
+                <div class="step-specs-drawer">
+                  <span>KERNEL: 3×3 Structuring Element</span>
+                  <span>CLOSING: Dilation then Erosion</span>
+                  <span>HOLE-FILL: Flood-Fill Interior Voids</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="methodology-step-row" data-step="5">
+              <div class="step-num-badge" style="background: var(--gradient-butter); color: #4A3800;">05</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 5: 14 Planar Geometric Descriptors</div>
+                <p class="step-summary-copy">
+                  Extraction of two-dimensional region footprint metrics: mask area, coverage ratio, perimeter, circularity (4π·Area/P²), compactness, bounding box, aspect ratio, and axes.
+                </p>
+                <div class="step-specs-drawer">
+                  <span>DESCRIPTOR COUNT: 14 Planar Features</span>
+                  <span>COORDINATES: Image Pixel Space (Uncalibrated)</span>
+                  <span>BOUNDS: Non-Metric</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="methodology-step-row" data-step="6">
+              <div class="step-num-badge" style="background: var(--gradient-berry);">06</div>
+              <div class="step-detail-body">
+                <div class="step-title-text">Stage 6: Provisional Relative Severity Formulation</div>
+                <p class="step-summary-copy">
+                  Relative Pothole Hazard Index (RPHI) computation using calibrated weights to assign provisional relative tiers (Low: 32.5%, Medium: 32.9%, High: 34.6%).
+                </p>
+                <div class="step-specs-drawer">
+                  <span>FORMULA: RPHI = 0.40·I_rel + 0.35·A_mask + 0.25·V_proxy</span>
+                  <span>TERTILES: 33% / 66% Population Splits</span>
+                  <span>BOUNDS: Provisional Research Assessment</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Formula Deep-Dive Card in Pink Glass -->
+          <div class="app-glass-card glass-pink" style="margin-top: 24px;">
+            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-top: 0; margin-bottom: 12px; color: var(--color-primary);">
+              Mathematical Formulation: Relative Pothole Hazard Index (RPHI)
+            </h3>
+            <div style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 14px; background: rgba(255,255,255,0.7); padding: 14px; border-radius: var(--radius-md); display: inline-block;">
+              RPHI = 0.40 · I<sub>rel</sub> + 0.35 · A<sub>mask</sub> + 0.25 · V<sub>proxy</sub>
+            </div>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+              Where <strong>I<sub>rel</sub></strong> is the maximum relative depression intensity, <strong>A<sub>mask</sub></strong> is the normalized 2D footprint pixel area, and <strong>V<sub>proxy</sub></strong> is the integrated relative depression volume proxy. The coefficients were calibrated via 5-fold group-disjoint cross-validation on the 98 canonical physical locations to prevent spatial data leakage.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==============================================================================
+             PAGE 6: SETTINGS VIEW (#view-settings)
+             ============================================================================== -->
+        <section class="app-view-panel" id="view-settings" aria-label="System Settings & Preferences">
+          <div class="view-header-bar">
+            <div class="view-header-left">
+              <span class="view-tag-eyebrow">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                WORKSPACE PREFERENCES
+              </span>
+              <h1 class="view-heading-title">Settings & Configuration</h1>
+              <p class="view-subtitle-desc">
+                Customize workstation appearance, motion preferences, default analysis modes, and manage local storage.
+              </p>
+            </div>
+          </div>
+
+          <div class="settings-sections-wrapper">
+
+            <!-- Appearance Section -->
+            <div class="app-glass-card glass-white settings-card">
+              <div class="settings-card-header">
+                <div class="settings-group-title">Appearance & Display</div>
+                <div class="settings-group-desc">Tailor visual themes and workspace layout density.</div>
+              </div>
+
+              <div class="settings-row-item">
+                <div>
+                  <div class="settings-row-label">Dark Mode</div>
+                  <div class="settings-row-desc">Enable slate dark theme with high-contrast glassmorphism surfaces.</div>
+                </div>
+                <label class="switch-control">
+                  <input type="checkbox" id="settingThemeDark">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row-item">
+                <div>
+                  <div class="settings-row-label">Reduced Motion</div>
+                  <div class="settings-row-desc">Disable decorative transitions, pulsing rings, and animated scanning lines.</div>
+                </div>
+                <label class="switch-control">
+                  <input type="checkbox" id="settingReduceMotion">
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row-item">
+                <div>
+                  <div class="settings-row-label">Laser Scanning Beam Effect</div>
+                  <div class="settings-row-desc">Show traveling laser reticle during computer-vision analysis.</div>
+                </div>
+                <label class="switch-control">
+                  <input type="checkbox" id="settingScanBeam" checked>
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pipeline & Specifications Section -->
+            <div class="app-glass-card glass-white settings-card">
+              <div class="settings-card-header">
+                <div class="settings-group-title">Loaded Model Artifacts</div>
+                <div class="settings-group-desc">Status of trained model weights and feature extractors.</div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                  <span style="font-family: var(--font-mono); font-weight: 600;">rgb_segmenter.joblib</span>
+                  <span class="tag-pill tag-aqua" id="settingPillSegmenter">11.5 MB · LOADED</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                  <span style="font-family: var(--font-mono); font-weight: 600;">svm_2d_geometry.joblib (Model B)</span>
+                  <span class="tag-pill tag-violet" id="settingPillModelB">44.8 KB · LOADED</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                  <span style="font-family: var(--font-mono); font-weight: 600;">svm_rphi_reproducer.joblib (Model A)</span>
+                  <span class="tag-pill tag-berry" id="settingPillModelA">13.9 KB · LOADED</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                  <span style="font-family: var(--font-mono); font-weight: 600;">Python REST Inference API</span>
+                  <span class="tag-pill tag-mint" id="settingPillApi">CHECKING...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 8px 0;">
+                  <span style="font-family: var(--font-mono); font-weight: 600;">Pothole440 Dataset (N=434)</span>
+                  <span class="tag-pill tag-mint">98 GROUPS · VERIFIED</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div class="app-glass-card glass-white settings-card">
+              <div class="settings-card-header">
+                <div class="settings-group-title">Local Data & Storage</div>
+                <div class="settings-group-desc">Manage cached browser inspections and reset defaults.</div>
+              </div>
+
+              <div class="settings-row-item">
+                <div>
+                  <div class="settings-row-label">Reset to Benchmark Defaults</div>
+                  <div class="settings-row-desc">Restore the original 8 canonical research samples to history.</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" id="settingResetDefaultsBtn">Reset Records</button>
+              </div>
+
+              <div class="settings-row-item">
+                <div>
+                  <div class="settings-row-label" style="color: #DC2626;">Clear All Local Storage</div>
+                  <div class="settings-row-desc">Wipe all cached analyses and preferences from this machine.</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" id="settingClearStorageBtn" style="color: #DC2626; border-color: rgba(220,38,38,0.3);">
+                  Clear Storage
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ==============================================================================
+       CONFIRMATION MODAL DIALOG
+       ============================================================================== -->
+  <div class="cracksight-modal-backdrop" id="confirmModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitleElem">
+    <div class="cracksight-modal-dialog">
+      <h3 class="modal-title" id="modalTitleElem">Confirm Action</h3>
+      <p class="modal-desc" id="modalDescElem">Are you sure you want to proceed with this operation?</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-sm" id="modalCancelBtn">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="modalConfirmBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

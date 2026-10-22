@@ -1,0 +1,16 @@
+{
+  "model_architecture": "DeepLabV3_MobileNetV3_Large",
+  "checkpoint_source": "C:\\Users\\Anushka\\Documents\\pothole-severity-detection\\models\\experimental_deeplabv3_unified.pt",
+  "torchscript_path": "C:\\Users\\Anushka\\Documents\\pothole-severity-detection\\models\\deeplabv3_mobilenetv3.torchscript.pt",
+  "file_size_mb": 42.67,
+  "input_resolution": [
+    256,
+    256
+  ],
+  "input_channels": 3,
+  "max_numerical_discrepancy": 0.0,
+  "mean_latency_ms": 37.52,
+  "p95_latency_ms": 60.4,
+  "best_val_iou": 0.7104905886215558,
+  "best_val_dice": 0.8201093212756141
+}

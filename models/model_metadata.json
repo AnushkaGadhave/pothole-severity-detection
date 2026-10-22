@@ -1,0 +1,57 @@
+{
+  "project": "AI-Based Pothole Depth and Physical Damage Severity Assessment",
+  "created_at_utc": "2026-10-14T17:27:20.863306+00:00",
+  "training_data": {
+    "path": "c:\\Users\\Anushka\\Documents\\pothole-severity-detection\\data\\processed\\pothole_features.csv",
+    "total_samples": 434,
+    "canonical_pothole_groups": 98,
+    "class_distribution": {
+      "High": 150,
+      "Medium": 143,
+      "Low": 141
+    }
+  },
+  "models": {
+    "model_a": {
+      "file": "svm_rphi_reproducer.joblib",
+      "name": "SVM (RBF) - RPHI Formula Reproducer",
+      "features": [
+        "relative_depth_max_intensity",
+        "mask_area_pixels",
+        "relative_volume_proxy"
+      ],
+      "num_features": 3,
+      "cv_macro_f1": 0.8879,
+      "cv_balanced_acc": 0.8938
+    },
+    "model_b": {
+      "file": "svm_2d_geometry.joblib",
+      "name": "SVM (RBF) - 2D Geometry Only",
+      "features": [
+        "mask_area_pixels",
+        "mask_coverage_ratio",
+        "mask_coverage_pct",
+        "perimeter_pixels",
+        "circularity",
+        "compactness",
+        "bbox_x_min",
+        "bbox_x_max",
+        "bbox_y_min",
+        "bbox_y_max",
+        "bbox_width",
+        "bbox_height",
+        "bbox_aspect_ratio",
+        "bbox_extent"
+      ],
+      "num_features": 14,
+      "cv_macro_f1": 0.6955,
+      "cv_balanced_acc": 0.7054
+    }
+  },
+  "scientific_limitations": [
+    "Tiers are provisional Relative Pothole Hazard Index (RPHI) categories within the Pothole440 dataset.",
+    "Tiers do NOT represent certified municipal maintenance urgency (BMC) or civil engineering standards (IRC:82).",
+    "Depth maps are uncalibrated 8-bit integers [0, 190], not calibrated millimeters (mm).",
+    "Mask areas are image pixel counts, not calibrated physical square meters."
+  ]
+}

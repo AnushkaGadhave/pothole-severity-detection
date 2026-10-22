@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrackSight — AI-Powered Road Inspection</title>
+  <meta name="description" content="An experimental computer-vision workflow for pothole-region segmentation and preliminary image-based road-condition assessment.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Multicolour Ambient Background Grid Overlay -->
+  <div class="technical-grid-bg" aria-hidden="true"></div>
+
+  <!-- ==============================================================================
+       SECTION 1: MINIMAL NAVIGATION
+       ============================================================================== -->
+  <header class="navbar-wrapper" id="navbar">
+    <div class="container navbar-container">
+      <a href="#overview" class="nav-brand" aria-label="CrackSight Home">
+        <svg class="brand-logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Outer Aperture Box in Deep Plum & Berry Pink -->
+          <rect x="2" y="2" width="32" height="32" rx="8" stroke="#B42368" stroke-width="2.5" fill="#FFFFFF"/>
+          <!-- Road Crosshair Alignment Guides -->
+          <line x1="6" y1="18" x2="30" y2="18" stroke="#E9E4DC" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <line x1="18" y1="6" x2="18" y2="30" stroke="#E9E4DC" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <!-- Inspection Contour in Berry Pink -->
+          <path d="M8 22C11 14 14 13 18 17C22 21 25 15 28 13" stroke="#B42368" stroke-width="2.8" stroke-linecap="round"/>
+          <!-- Sunset Orange & Butter Yellow Targeting Reticle -->
+          <circle cx="18" cy="17" r="4" fill="#FF7043"/>
+          <circle cx="18" cy="17" r="6.5" stroke="#FFD166" stroke-width="1.8"/>
+        </svg>
+        <div class="brand-text-group">
+          <span class="brand-name">CrackSight</span>
+          <span class="brand-descriptor">AI-Powered Road Inspection</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links (Visible on desktop only) -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#overview" class="nav-link active">Overview</a></li>
+          <li><a href="#preview" class="nav-link">Preview</a></li>
+          <li><a href="#capabilities" class="nav-link">Capabilities</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#workflow" class="nav-link">Workflow</a></li>
+          <li><a href="#methodology" class="nav-link">Method</a></li>
+          <li><a href="#limitations" class="nav-link">Limitations</a></li>
+        </ul>
+      </nav>
+
+      <!-- Desktop Primary CTA -->
+      <div class="nav-cta-group">
+        <a href="app.html" class="btn btn-primary nav-launch-btn">
+          <span>Launch Dashboard</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer (Hidden on desktop via display: none !important) -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <ul class="mobile-drawer-links">
+        <li><a href="#overview" class="mobile-nav-link">Overview</a></li>
+        <li><a href="#preview" class="mobile-nav-link">Preview</a></li>
+        <li><a href="#capabilities" class="mobile-nav-link">Capabilities</a></li>
+        <li><a href="#features" class="mobile-nav-link">Features</a></li>
+        <li><a href="#workflow" class="mobile-nav-link">Workflow</a></li>
+        <li><a href="#methodology" class="mobile-nav-link">Method</a></li>
+        <li><a href="#limitations" class="mobile-nav-link">Limitations</a></li>
+      </ul>
+      <a href="app.html" class="btn btn-primary mobile-drawer-btn">Launch Dashboard →</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==============================================================================
+         SECTION 2: HIGH-IMPACT HERO SECTION
+         Bold Space Grotesk Typography · Berry-to-Sunset Gradient · Butter Underline
+         ============================================================================== -->
+    <section class="hero-section" id="overview">
+      <div class="container hero-content">
+
+        <h1 class="hero-headline reveal-on-scroll stagger-1">
+          See the surface.<br>
+          <span class="gradient-hero-phrase">Understand the damage.</span>
+        </h1>
+
+        <p class="hero-description reveal-on-scroll stagger-2">
+          An experimental computer-vision workflow for pothole-region segmentation and preliminary image-based road-condition assessment.
+        </p>
+
+        <div class="hero-actions reveal-on-scroll stagger-3">
+          <a href="app.html#analysis" class="btn btn-primary">
+            <span>Try Analysis Studio</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="app.html" class="btn btn-secondary">
+            <span>Open Dashboard</span>
+          </a>
+        </div>
+
+        <div class="reveal-on-scroll stagger-4">
+          <span class="hero-status-label">
+            <span class="dot" aria-hidden="true"></span>
+            Experimental research prototype · Image-based analysis
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 3: LARGE ANIMATED PRODUCT-PREVIEW SHOWCASE
+         Embedded immediately beneath the hero
+         ============================================================================== -->
+    <section class="preview-section" id="preview">
+      <div class="container">
+        <div class="showcase-workbench tech-bracket reveal-on-scroll">
+
+          <!-- Workbench Top Toolbar -->
+          <div class="workbench-toolbar">
+            <div class="toolbar-left">
+              <div class="window-pills" aria-hidden="true">
+                <span class="window-pill red"></span>
+                <span class="window-pill yellow"></span>
+                <span class="window-pill green"></span>
+              </div>
+              <span class="pipeline-id-badge">PIPELINE: CRACKSIGHT-CV-088</span>
+              <span style="opacity: 0.5;">·</span>
+              <span>GROUP_DISJOINT: FOLD_0</span>
+            </div>
+
+            <div class="toolbar-center">
+              <div class="mode-switches" role="tablist" aria-label="Inspection View Modes">
+                <button class="mode-btn active" role="tab" aria-selected="true" data-mode="composite">Composite View</button>
+                <button class="mode-btn" role="tab" aria-selected="false" data-mode="rgb">Source RGB</button>
+                <button class="mode-btn" role="tab" aria-selected="false" data-mode="mask">Binary Mask</button>
+                <button class="mode-btn" role="tab" aria-selected="false" data-mode="geometry">2D Geometry</button>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <span>SCALE: 0.25</span>
+              <span style="opacity: 0.5;">·</span>
+              <span style="color: var(--color-primary); font-weight: 700;">STATUS: PREVIEW_ACTIVE</span>
+            </div>
+          </div>
+
+          <!-- Workbench Multi-Panel Canvas -->
+          <div class="workbench-canvas">
+
+            <!-- Panel A: Source Road Surface Image -->
+            <div class="visual-panel" id="panelSourceView">
+              <div class="panel-header">
+                <span class="panel-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  PANEL A: SOURCE IMAGE
+                </span>
+                <span class="panel-meta-tag">RGB [H, W, 3]</span>
+              </div>
+
+              <div class="viewport-display" id="sourceViewport">
+                <img src="./assets/sample_pothole_rgb.png" alt="Pothole RGB Source pavement image showing road cavity" class="viewport-image" id="sourceImageElem">
+                <!-- Moving Laser Scan Line (Sunset Orange with Butter Yellow Glow) -->
+                <div class="scan-beam" id="scanBeamElem" aria-hidden="true"></div>
+                <!-- Reticle Targeting Marker -->
+                <div class="reticle-box" aria-hidden="true">
+                  <div class="crosshair-center"></div>
+                </div>
+              </div>
+
+              <div class="panel-footer-legend">
+                <span class="legend-item"><span class="legend-swatch berry"></span> Asphalt Substrate</span>
+                <span class="legend-item"><span class="legend-swatch orange"></span> Target ROI Region</span>
+              </div>
+            </div>
+
+            <!-- Panel B: Segmentation Mask & Geometry -->
+            <div class="visual-panel" id="panelSegmentationView">
+              <div class="panel-header">
+                <span class="panel-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                  PANEL B: SEGMENTATION PREVIEW
+                </span>
+                <span class="panel-meta-tag">BINARY MASK [UINT8]</span>
+              </div>
+
+              <div class="viewport-display" id="maskViewport">
+                <div class="mask-canvas-wrapper">
+                  <img src="./assets/sample_pothole_mask.png" alt="Pothole ground truth and predicted binary segmentation mask" class="viewport-image" id="maskImageElem">
+                  <!-- Vector Geometry Overlay Diagram -->
+                  <svg class="mask-svg-overlay" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true" id="geometrySvgElem">
+                    <!-- Bounding Box in Sunset Orange -->
+                    <rect x="85" y="65" width="230" height="170" fill="none" stroke="#FF7043" stroke-width="2" stroke-dasharray="4 4" opacity="0.95"/>
+                    <!-- Major / Minor Axis Lines in Retro Violet -->
+                    <line x1="85" y1="150" x2="315" y2="150" stroke="#6558D3" stroke-width="1.8" stroke-dasharray="2 2"/>
+                    <line x1="200" y1="65" x2="200" y2="235" stroke="#6558D3" stroke-width="1.8" stroke-dasharray="2 2"/>
+                    <!-- Centroid Marker in Berry Pink with Butter Yellow Ring -->
+                    <circle cx="200" cy="150" r="5" fill="#B42368"/>
+                    <circle cx="200" cy="150" r="10" stroke="#FFD166" stroke-width="2" fill="none"/>
+                    <!-- Label Callouts -->
+                    <text x="92" y="82" fill="#FF7043" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">ROI_EXTENTS</text>
+                    <text x="210" y="145" fill="#FFFFFF" font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="600">CENTROID (cx, cy)</text>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="panel-footer-legend">
+                <span class="legend-item"><span class="legend-swatch orange"></span> Predicted Cavity (255)</span>
+                <span class="legend-item"><span class="legend-swatch violet"></span> Pavement Substrate (0)</span>
+              </div>
+            </div>
+
+            <!-- Panel D: Annotation Rail (Telemetry in Glass Cards) -->
+            <aside class="annotation-rail" aria-label="Inspection Telemetry">
+              <div class="telemetry-block">
+                <span class="telemetry-label">Input Modality</span>
+                <div class="telemetry-value">
+                  <span>RGB IMAGE</span>
+                  <span class="tag-pill tag-berry">24-BIT</span>
+                </div>
+                <p class="telemetry-subtext">3-channel natural color image from road inspection survey.</p>
+              </div>
+
+              <div class="telemetry-block">
+                <span class="telemetry-label">Segmentation Output</span>
+                <div class="telemetry-value">
+                  <span>PREDICTED MASK</span>
+                  <span class="tag-pill tag-aqua">2D UINT8</span>
+                </div>
+                <p class="telemetry-subtext">Multi-scale pixel classification with morphological closing.</p>
+              </div>
+
+              <div class="telemetry-block">
+                <span class="telemetry-label">Geometric Extraction</span>
+                <div class="telemetry-value">
+                  <span>14 FEATURES</span>
+                  <span class="tag-pill tag-violet">IMAGE-DERIVED</span>
+                </div>
+                <p class="telemetry-subtext">Area, perimeter, circularity, aspect ratio, solidity.</p>
+              </div>
+
+              <div class="telemetry-block">
+                <div class="telemetry-badge-experimental">
+                  <span class="title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    STATUS: EXPERIMENTAL DEMO
+                  </span>
+                  <p>Illustrative inspection preview grounded in research pipeline. Does not perform live server inference.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Bottom Workbench Bar -->
+          <div class="workbench-bottom-bar">
+            <span>DATASET CONTEXT: POTHOLE440 ROAD INSPECTION SURVEY</span>
+            <span class="mono">EVALUATION: GROUP-DISJOINT VALIDATION (MEAN DICE ~0.53 · MEAN IOU ~0.39)</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 4: CAPABILITIES — VIBRANT MULTICOLOUR GLASS CARDS
+         Pink Glass · Violet Glass · Peach Glass · Butter Glass
+         ============================================================================== -->
+    <section class="intro-section" id="capabilities">
+      <div class="container">
+        <div class="intro-header-block reveal-on-scroll">
+          <span class="section-tag">01 / CAPABILITIES</span>
+          <h2 class="intro-headline">From road imagery to structured inspection cues.</h2>
+          <p class="intro-lead">
+            CrackSight explores how computer vision and image-derived features can support preliminary pothole analysis while keeping the limitations of the available data explicit.
+          </p>
+        </div>
+
+        <div class="capabilities-strip reveal-on-scroll stagger-1">
+          <!-- Card 1: Pink Glass with Berry Gradient Icon -->
+          <div class="capability-item glass-pink">
+            <div class="icon-box-lg berry">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+            </div>
+            <span class="cap-number">CAPABILITY 01</span>
+            <h3 class="cap-title">RGB pothole segmentation</h3>
+            <p class="cap-desc">An experimental multi-scale pixel classifier predicts a binary pothole-region mask directly from RGB image appearance.</p>
+          </div>
+
+          <!-- Card 2: Violet Glass with Violet Gradient Icon -->
+          <div class="capability-item glass-violet">
+            <div class="icon-box-lg violet">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+            </div>
+            <span class="cap-number">CAPABILITY 02</span>
+            <h3 class="cap-title">2D geometry analysis</h3>
+            <p class="cap-desc">Image-region geometry (area footprint, aspect ratio, circularity) can be examined using the predicted 2D mask.</p>
+          </div>
+
+          <!-- Card 3: Peach Glass with Sunset Orange Gradient Icon -->
+          <div class="capability-item glass-peach">
+            <div class="icon-box-lg orange">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/></svg>
+            </div>
+            <span class="cap-number">CAPABILITY 03</span>
+            <h3 class="cap-title">Depth-map-derived features</h3>
+            <p class="cap-desc">The feature pipeline can incorporate available dataset depth-map information where paired sensor data exists.</p>
+          </div>
+
+          <!-- Card 4: Butter Yellow Glass with Gold Gradient Icon -->
+          <div class="capability-item glass-butter">
+            <div class="icon-box-lg yellow">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <span class="cap-number">CAPABILITY 04</span>
+            <h3 class="cap-title">Provisional severity tiers</h3>
+            <p class="cap-desc">Relative categories are derived using the project’s current formula-based method for comparison and research.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hairline-divider" aria-hidden="true"></div>
+
+    <!-- ==============================================================================
+         SECTION 5: ALTERNATING ANIMATED FEATURE SECTIONS
+         ============================================================================== -->
+    <section class="features-container" id="features">
+      <div class="container">
+
+        <!-- Feature A: Identify the Region -->
+        <article class="feature-block reveal-on-scroll">
+          <div class="feature-content">
+            <span class="section-tag">FEATURE A · REGION DETECTION</span>
+            <h2 class="feature-heading">Start with the visible surface.</h2>
+            <p class="feature-copy">
+              The experimental RGB segmentation model estimates a pothole region from image appearance. Its predicted mask provides a basis for examining the visible region, but may also be affected by shadows, stains, and other similar-looking surfaces.
+            </p>
+            <ul class="feature-tech-bullets">
+              <li><span class="bullet-marker orange" aria-hidden="true"></span> Multi-scale color contrast, luminance, and texture gradient features</li>
+              <li><span class="bullet-marker orange" aria-hidden="true"></span> Morphological refinement with 3×3 binary closing and hole-filling</li>
+              <li><span class="bullet-marker orange" aria-hidden="true"></span> Evaluated on strictly disjoint physical pothole groups to prevent leakage</li>
+            </ul>
+          </div>
+
+          <div class="feature-visual">
+            <div class="feature-visual-box tech-bracket">
+              <div class="comparison-split-wrapper">
+                <div class="split-card">
+                  <img src="./assets/sample2_rgb.png" alt="Road Surface RGB input image">
+                  <span class="split-label-badge" style="background-color: var(--color-accent);">SOURCE RGB</span>
+                </div>
+                <div class="split-card">
+                  <img src="./assets/sample2_mask.png" alt="Segmented binary mask corresponding to road image">
+                  <span class="split-label-badge" style="background-color: var(--color-primary);">PREDICTED MASK</span>
+                </div>
+              </div>
+              <div class="alignment-connector-line">
+                <span class="bar"></span>
+                <span>SPATIAL COORDINATE ALIGNMENT (1:1 PIXEL MATCH)</span>
+                <span class="bar"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature B: Examine Image-Derived Features (Reversed) -->
+        <article class="feature-block reverse reveal-on-scroll">
+          <div class="feature-content">
+            <span class="section-tag">FEATURE B · MORPHOLOGY & GEOMETRY</span>
+            <h2 class="feature-heading">Turn the region into measurable image features.</h2>
+            <p class="feature-copy">
+              The project examines two-dimensional region geometry and features derived from the available dataset. Their interpretation depends on the input data and does not automatically translate into calibrated physical measurements.
+            </p>
+            <ul class="feature-tech-bullets">
+              <li><span class="bullet-marker violet" aria-hidden="true"></span> 14 distinct planar footprint descriptors extracted without depth requirements</li>
+              <li><span class="bullet-marker violet" aria-hidden="true"></span> Normalized circularity, aspect ratio, and perimeter irregularity</li>
+              <li><span class="bullet-marker violet" aria-hidden="true"></span> Image pixel units are kept strictly separated from physical millimeters</li>
+            </ul>
+          </div>
+
+          <div class="feature-visual">
+            <div class="geometry-diagram-box glass-violet tech-bracket">
+              <div class="geometry-svg-container">
+                <svg width="290" height="210" viewBox="0 0 290 210" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Geometric feature diagram showing area, perimeter, and axes">
+                  <!-- Coordinate Grid Lines -->
+                  <line x1="20" y1="105" x2="270" y2="105" stroke="#E9E4DC" stroke-width="1.2" stroke-dasharray="2 2"/>
+                  <line x1="145" y1="20" x2="145" y2="190" stroke="#E9E4DC" stroke-width="1.2" stroke-dasharray="2 2"/>
+
+                  <!-- Convex Hull (dashed) in Retro Violet -->
+                  <polygon points="68,95 115,48 198,58 230,115 192,160 105,155" fill="rgba(101,88,211,0.08)" stroke="#6558D3" stroke-width="1.8" stroke-dasharray="3 3"/>
+
+                  <!-- Organic Pothole Contour in Sunset Orange with Berry Glow -->
+                  <path d="M72,100 C82,62 125,50 188,60 C222,68 232,110 218,135 C202,160 135,170 98,150 C78,135 68,120 72,100 Z" fill="rgba(255,112,67,0.22)" stroke="#FF7043" stroke-width="2.8"/>
+
+                  <!-- Major & Minor Axis Dimensions in Retro Violet & Berry Pink -->
+                  <line x1="72" y1="110" x2="222" y2="110" stroke="#6558D3" stroke-width="1.8"/>
+                  <circle cx="72" cy="110" r="3.5" fill="#6558D3"/>
+                  <circle cx="222" cy="110" r="3.5" fill="#6558D3"/>
+                  <text x="135" y="102" fill="#6558D3" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">Major Axis (a)</text>
+
+                  <line x1="145" y1="55" x2="145" y2="162" stroke="#B42368" stroke-width="1.8"/>
+                  <circle cx="145" cy="55" r="3.5" fill="#B42368"/>
+                  <circle cx="145" cy="162" r="3.5" fill="#B42368"/>
+                  <text x="152" y="146" fill="#B42368" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">Minor Axis (b)</text>
+
+                  <!-- Centroid Point in Deep Plum with Butter Yellow Halo -->
+                  <circle cx="145" cy="110" r="5.5" fill="#351C30"/>
+                  <circle cx="145" cy="110" r="10" stroke="#FFD166" stroke-width="2" fill="none"/>
+                </svg>
+              </div>
+
+              <div class="feature-metrics-grid">
+                <div class="metric-chip">
+                  <span class="chip-name" style="color: var(--color-primary);">MASK AREA (px)</span>
+                  <span class="chip-desc">Pixel Footprint</span>
+                </div>
+                <div class="metric-chip">
+                  <span class="chip-name" style="color: var(--color-tech);">CIRCULARITY</span>
+                  <span class="chip-desc">4π·Area / P²</span>
+                </div>
+                <div class="metric-chip">
+                  <span class="chip-name" style="color: var(--color-accent);">ASPECT RATIO</span>
+                  <span class="chip-desc">Box Extents Ratio</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature C: Interpret Provisional Severity & Real Multicolour Dataset Chart -->
+        <article class="feature-block reveal-on-scroll">
+          <div class="feature-content">
+            <span class="section-tag">FEATURE C · SEVERITY CATEGORIZATION</span>
+            <h2 class="feature-heading">Make the reasoning visible.</h2>
+            <p class="feature-copy">
+              The current severity logic produces provisional relative tiers from the implemented feature-based formula. These categories are intended for research and comparison, not as certified engineering classifications.
+            </p>
+            <ul class="feature-tech-bullets">
+              <li><span class="bullet-marker berry" aria-hidden="true"></span> Quantile boundaries calibrated strictly on training partition groups</li>
+              <li><span class="bullet-marker berry" aria-hidden="true"></span> Support Vector Machine classifier with uncalibrated hyperplane margin outputs</li>
+              <li><span class="bullet-marker berry" aria-hidden="true"></span> Explicitly distinguished from municipal pavement maintenance urgency standards</li>
+            </ul>
+          </div>
+
+          <div class="feature-visual">
+            <div class="severity-spectrum-box tech-bracket">
+
+              <!-- 3-Tier Multicolour Spectrum Cards -->
+              <div class="spectrum-bars">
+                <!-- Tier 1: Low (Retro Violet) -->
+                <div class="tier-bar-card low">
+                  <div class="tier-info-left">
+                    <span class="tier-pill low">LOW</span>
+                    <div>
+                      <span class="tier-title-text">Minor Planar Depression</span>
+                      <span class="tier-quantile-label" style="display: block;">Relative Percentile: 0% – 33%</span>
+                    </div>
+                  </div>
+                  <span class="mono" style="font-size: 0.8125rem; color: var(--color-tech); font-weight: 700;">TIER 1</span>
+                </div>
+
+                <!-- Tier 2: Medium (Sunset Orange) -->
+                <div class="tier-bar-card medium">
+                  <div class="tier-info-left">
+                    <span class="tier-pill medium">MEDIUM</span>
+                    <div>
+                      <span class="tier-title-text">Moderate Expansion Cavity</span>
+                      <span class="tier-quantile-label" style="display: block;">Relative Percentile: 34% – 66%</span>
+                    </div>
+                  </div>
+                  <span class="mono" style="font-size: 0.8125rem; color: var(--color-accent); font-weight: 700;">TIER 2</span>
+                </div>
+
+                <!-- Tier 3: High (Berry Pink) -->
+                <div class="tier-bar-card high">
+                  <div class="tier-info-left">
+                    <span class="tier-pill high">HIGH</span>
+                    <div>
+                      <span class="tier-title-text">Substantial Relative Defect</span>
+                      <span class="tier-quantile-label" style="display: block;">Relative Percentile: 67% – 100%</span>
+                    </div>
+                  </div>
+                  <span class="mono" style="font-size: 0.8125rem; color: var(--color-primary); font-weight: 700;">TIER 3</span>
+                </div>
+              </div>
+
+              <!-- REAL MULTICOLOUR DATASET DISTRIBUTION CHART (Data from models/model_metadata.json, N=434) -->
+              <div class="dataset-chart-wrapper" id="datasetDistributionChart">
+                <div class="chart-header-row">
+                  <span class="chart-title">POTHOLE440 DATASET CLASS DISTRIBUTION</span>
+                  <span class="chart-badge">N = 434 SAMPLES</span>
+                </div>
+
+                <div class="chart-bars-horizontal">
+                  <div class="chart-row">
+                    <span class="chart-label">High Tier</span>
+                    <div class="chart-track">
+                      <div class="chart-fill fill-high" data-target-width="34.6%"></div>
+                    </div>
+                    <span class="chart-val">150 (34.6%)</span>
+                  </div>
+
+                  <div class="chart-row">
+                    <span class="chart-label">Medium Tier</span>
+                    <div class="chart-track">
+                      <div class="chart-fill fill-medium" data-target-width="32.9%"></div>
+                    </div>
+                    <span class="chart-val">143 (32.9%)</span>
+                  </div>
+
+                  <div class="chart-row">
+                    <span class="chart-label">Low Tier</span>
+                    <div class="chart-track">
+                      <div class="chart-fill fill-low" data-target-width="32.5%"></div>
+                    </div>
+                    <span class="chart-val">141 (32.5%)</span>
+                  </div>
+                </div>
+
+                <div class="chart-footnote">
+                  * 98 Canonical Physical Pothole Locations · Group-Disjoint 5-Fold CV Evaluation
+                </div>
+              </div>
+
+              <div class="conceptual-notice-banner">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Conceptual explanation of relative tiers within the dataset population. Does not represent certified municipal maintenance ratings (e.g. BMC or IRC:82).</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 6: ANIMATED USER-FACING WORKFLOW (INTERACTIVE)
+         ============================================================================== -->
+    <section class="workflow-section" id="workflow">
+      <div class="container">
+        <div class="workflow-header-wrap reveal-on-scroll">
+          <span class="section-tag">02 / WORKFLOW PIPELINE</span>
+          <h2 style="font-size: clamp(2.2rem, 3.8vw, 3rem); margin-bottom: 18px;">A clear path from image to preliminary assessment.</h2>
+          <p style="font-size: 1.1875rem;">
+            A structured, repeatable sequence translating raw road imagery into measurable geometric indicators and provisional relative tiers. Click any stage to inspect it.
+          </p>
+        </div>
+
+        <div class="workflow-pipeline-flow reveal-on-scroll stagger-1" id="workflowFlowElem">
+          <!-- Animated Connecting Path SVG with Traveling Pulse (Desktop) -->
+          <svg class="pipeline-circuit-svg" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="5" x2="1000" y2="5" class="circuit-track"/>
+            <line x1="0" y1="5" x2="1000" y2="5" class="circuit-pulse"/>
+          </svg>
+
+          <!-- Stage 01: Sunset Peach Glass -->
+          <div class="stage-step-card glass-peach active-flow" data-stage="1" tabindex="0" role="button" aria-label="Stage 01: Provide image or required data">
+            <div class="stage-top-row">
+              <span class="stage-indicator-badge" style="background: var(--gradient-sunset); color: #fff;">01</span>
+              <svg class="stage-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <h3 class="stage-heading">Provide image or required data</h3>
+            <p class="stage-description">
+              RGB imagery is used for segmentation, while the feature-based severity pipeline may require corresponding depth-map-derived information.
+            </p>
+          </div>
+
+          <!-- Stage 02: Berry Pink Glass -->
+          <div class="stage-step-card glass-pink" data-stage="2" tabindex="0" role="button" aria-label="Stage 02: Segment the pothole region">
+            <div class="stage-top-row">
+              <span class="stage-indicator-badge" style="background: var(--gradient-berry); color: #fff;">02</span>
+              <svg class="stage-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+            </div>
+            <h3 class="stage-heading">Segment the pothole region</h3>
+            <p class="stage-description">
+              The experimental RGB model predicts a binary mask of the likely pothole region using multi-scale pixel feature classification.
+            </p>
+          </div>
+
+          <!-- Stage 03: Retro Violet Glass -->
+          <div class="stage-step-card glass-violet" data-stage="3" tabindex="0" role="button" aria-label="Stage 03: Extract image-derived features">
+            <div class="stage-top-row">
+              <span class="stage-indicator-badge" style="background: var(--gradient-violet); color: #fff;">03</span>
+              <svg class="stage-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/></svg>
+            </div>
+            <h3 class="stage-heading">Extract image-derived features</h3>
+            <p class="stage-description">
+              The project examines two-dimensional geometry and uses the available features required by the relevant analysis path.
+            </p>
+          </div>
+
+          <!-- Stage 04: Butter Yellow Glass Milestone -->
+          <div class="stage-step-card glass-butter" data-stage="4" tabindex="0" role="button" aria-label="Stage 04: Review the preliminary assessment">
+            <div class="stage-top-row">
+              <span class="stage-indicator-badge" style="background: var(--gradient-butter); color: #4A3800;">04</span>
+              <svg class="stage-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3 class="stage-heading">Review the preliminary assessment</h3>
+            <p class="stage-description">
+              The formula-based pipeline can produce provisional relative severity tiers where the necessary features are available.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive Workflow Inspection Detail Panel -->
+        <div class="workflow-detail-panel glass-surface tech-bracket reveal-on-scroll stagger-2" id="workflowDetailPanel" aria-live="polite">
+          <div class="workflow-detail-header">
+            <div class="workflow-detail-tag" id="workflowDetailTag">STAGE 01 OF 04 · INPUT INGESTION</div>
+            <span class="workflow-mode-pill mono">INTERACTIVE STAGE INSPECTION</span>
+          </div>
+          <h4 class="workflow-detail-title" id="workflowDetailTitle">Provide image or required data</h4>
+          <p class="workflow-detail-copy" id="workflowDetailCopy">
+            RGB imagery is used for segmentation, while the feature-based severity pipeline may require corresponding depth-map-derived information.
+          </p>
+          <div class="workflow-detail-specs" id="workflowDetailSpecs">
+            <div class="spec-item"><span class="spec-k">Modality:</span> <span class="spec-v">Standard 3-Channel RGB (H×W×3)</span></div>
+            <div class="spec-item"><span class="spec-k">Spatial Scaling:</span> <span class="spec-v">0.25 Scale Normalized Matrix</span></div>
+            <div class="spec-item"><span class="spec-k">Sensor Telemetry:</span> <span class="spec-v">Optional Uint8 [0–190] Grayscale Depth Array</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 7: METHODOLOGY
+         ============================================================================== -->
+    <section class="methodology-section" id="methodology">
+      <div class="container">
+        <div class="methodology-grid">
+
+          <div class="methodology-principles reveal-on-scroll">
+            <span class="section-tag">03 / METHODOLOGY</span>
+            <h2 style="font-size: clamp(2.2rem, 3.6vw, 2.75rem); margin-bottom: 28px;">Built around observable evidence.</h2>
+
+            <div class="principle-item">
+              <div class="principle-header">
+                <span class="principle-num" style="background: var(--color-primary-tint); color: var(--color-primary); border: 1px solid var(--color-primary-border);">01</span>
+                <h3 class="principle-title">Segmentation first</h3>
+              </div>
+              <p class="principle-text">
+                Estimate the visible pothole region from RGB image appearance before examining its two-dimensional geometry.
+              </p>
+            </div>
+
+            <div class="principle-item">
+              <div class="principle-header">
+                <span class="principle-num" style="background: var(--color-tech-tint); color: var(--color-tech); border: 1px solid var(--color-tech-border);">02</span>
+                <h3 class="principle-title">Features with context</h3>
+              </div>
+              <p class="principle-text">
+                Interpret image-derived geometry and available depth-map features according to what the dataset actually provides.
+              </p>
+            </div>
+
+            <div class="principle-item">
+              <div class="principle-header">
+                <span class="principle-num" style="background: var(--color-accent-tint); color: var(--color-accent); border: 1px solid var(--color-accent-border);">03</span>
+                <h3 class="principle-title">Transparent severity logic</h3>
+              </div>
+              <p class="principle-text">
+                Treat formula-derived tiers as provisional relative categories and communicate their assumptions clearly.
+              </p>
+            </div>
+          </div>
+
+          <!-- Formula Card in Soft Pink Glass -->
+          <div class="methodology-formula-card glass-pink tech-bracket reveal-on-scroll stagger-1">
+            <div class="formula-card-title">
+              <span>Constituent Formula Pipeline</span>
+              <span class="tag-pill tag-aqua" style="font-size: 0.75rem;">RESEARCH SPECIFICATION</span>
+            </div>
+
+            <div class="formula-display-math">
+              <span style="color: var(--color-primary); font-weight: 700;">RPHI</span> =
+              w<sub>1</sub>·I<sub>rel</sub> +
+              w<sub>2</sub>·A<sub>mask</sub> +
+              w<sub>3</sub>·V<sub>proxy</sub>
+            </div>
+
+            <ul class="formula-components-list">
+              <li>
+                <strong>I<sub>rel</sub></strong> — Relative maximum depression intensity proxy within basin.
+              </li>
+              <li>
+                <strong>A<sub>mask</sub></strong> — Projected 2D binary surface footprint pixel area.
+              </li>
+              <li>
+                <strong>V<sub>proxy</sub></strong> — Integrated relative intensity volume displacement proxy.
+              </li>
+              <li>
+                <strong>w<sub>1, 2, 3</sub></strong> — Calibrated weights (0.40, 0.35, 0.25) fitted strictly on training group folds.
+              </li>
+            </ul>
+
+            <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-color); font-size: 0.8125rem; color: var(--color-text-subtle);">
+              *Note: Depth descriptors utilize uncalibrated grayscale sensor integer units [0, 190], not physical millimeters.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 8: LIMITATIONS AND RESPONSIBLE INTERPRETATION
+         ============================================================================== -->
+    <section class="limitations-section" id="limitations">
+      <div class="container">
+        <div class="limitations-card-surface tech-bracket reveal-on-scroll">
+          <div class="limitations-headline-wrap">
+            <span class="section-tag" style="color: var(--color-accent);">04 / SCIENTIFIC INTEGRITY</span>
+            <h2 class="limitations-title">Useful signals. Honest boundaries.</h2>
+            <p style="font-size: 1.1875rem; max-width: 760px;">
+              Civil engineering inspection demands strict transparency regarding sensor calibration and algorithmic boundaries. CrackSight communicates its exact operational parameters:
+            </p>
+          </div>
+
+          <div class="limitations-grid">
+            <div class="limitation-item glass-pink">
+              <span class="limitation-label" style="color: var(--color-primary);">1. Experimental RGB Segmentation</span>
+              <p>
+                The RGB segmentation model is experimental and may confuse potholes with shadows, stains, moisture patches, or other visually similar dark road surfaces.
+              </p>
+            </div>
+
+            <div class="limitation-item glass-peach">
+              <span class="limitation-label" style="color: var(--color-accent);">2. Uncalibrated Depth Maps</span>
+              <p>
+                The dataset’s depth maps are uncalibrated 8-bit grayscale representations [0, 190] and do not establish physical depth in millimetres or calibrated volume in litres.
+              </p>
+            </div>
+
+            <div class="limitation-item glass-violet">
+              <span class="limitation-label" style="color: var(--color-tech);">3. No Physical Depth from RGB</span>
+              <p>
+                RGB segmentation alone produces a 2D planar footprint mask; it does NOT estimate 3D depth, vertical cavity profile, or volume from RGB imagery.
+              </p>
+            </div>
+
+            <div class="limitation-item glass-butter">
+              <span class="limitation-label" style="color: var(--color-highlight-text);">4. Provisional Relative Tiers</span>
+              <p>
+                Formula-derived severity tiers (Low, Medium, High) are provisional relative percentiles within the Pothole440 dataset population, NOT certified municipal maintenance ratings.
+              </p>
+            </div>
+
+            <div class="limitation-item glass-aqua" style="grid-column: 1 / -1;">
+              <span class="limitation-label" style="color: var(--color-aqua-text);">5. Real-World Civic Deployment Preconditions</span>
+              <p>
+                Real-world deployment would require independent geotechnical field validation, verified sensor camera geometry, calibrated focal parameters, and municipal engineering alignment (e.g., IRC:82 or BMC standards).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         SECTION 9: CLOSING CTA
+         ============================================================================== -->
+    <section class="closing-cta-section">
+      <div class="container">
+        <div class="closing-content-wrap glass-surface tech-bracket reveal-on-scroll">
+          <h2 class="closing-headline">A clearer starting point for road inspection.</h2>
+          <p class="closing-copy">
+            Explore the method, understand the outputs, and keep every assessment grounded in what the image data can actually tell us.
+          </p>
+          <div class="closing-actions">
+            <a href="app.html" class="btn btn-primary">
+              <span>Launch Full Dashboard</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="#overview" class="btn btn-secondary" id="backToTopBtn">
+              <span>Back to overview</span>
+              <span class="btn-arrow" aria-hidden="true">↑</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==============================================================================
+       MINIMAL FOOTER
+       ============================================================================== -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="footer-top-row">
+
+        <div class="footer-brand-summary">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <svg class="brand-logo-svg" style="width: 32px; height: 32px;" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="2" y="2" width="32" height="32" rx="8" stroke="#B42368" stroke-width="2.5" fill="#FFFFFF"/>
+              <path d="M8 22C11 14 14 13 18 17C22 21 25 15 28 13" stroke="#B42368" stroke-width="2.8" stroke-linecap="round"/>
+              <circle cx="18" cy="17" r="4" fill="#FF7043"/>
+            </svg>
+            <span style="font-family: var(--font-display); font-weight: 750; font-size: 1.25rem; color: var(--color-text-main);">CrackSight</span>
+          </div>
+          <p style="font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 10px;">
+            AI-POWERED ROAD INSPECTION<br>
+            Experimental computer-vision research prototype.
+          </p>
+        </div>
+
+        <div class="footer-nav-columns">
+          <div>
+            <span class="footer-col-title">Navigation</span>
+            <ul class="footer-links-list">
+              <li><a href="#overview">Overview</a></li>
+              <li><a href="#preview">Inspection Preview</a></li>
+              <li><a href="#capabilities">Capabilities</a></li>
+              <li><a href="#features">Feature Analysis</a></li>
+              <li><a href="app.html">Launch Dashboard</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <span class="footer-col-title">Studio & Research</span>
+            <ul class="footer-links-list">
+              <li><a href="app.html#analysis">Image Analysis Studio</a></li>
+              <li><a href="app.html#history">Analysis History</a></li>
+              <li><a href="app.html#analytics">Dataset Analytics</a></li>
+              <li><a href="app.html#methodology">Methodology & RPHI</a></li>
+              <li><a href="#limitations">Limitations & Boundaries</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>© 2026 CrackSight Research. MIT License. Project: AI-Based Pothole Severity Assessment.</div>
+        <div class="live-system-beacon">
+          <span class="beacon-indicator" aria-hidden="true"></span>
+          <span>PIPELINE VERIFIED · 57 UNIT TESTS PASSING</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
